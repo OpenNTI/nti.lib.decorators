@@ -1,15 +1,21 @@
-const MIXINS = Symbol('Applied Mixins');
+import Logger from 'nti-util-logger';
+
+const logger = Logger.get('decorators:Mixin');
+
+//exported for testing
+export const MIXINS = Symbol('Applied Mixins');
 
 const { defineProperty, getOwnPropertyDescriptor,
 		getOwnPropertyNames, getOwnPropertySymbols } = Object;
 
-const getOwnProperties = getOwnPropertySymbols
+export const getOwnProperties = getOwnPropertySymbols
 		? (object) => [...getOwnPropertyNames(object), ...getOwnPropertySymbols(object)]
 		: getOwnPropertyNames;
 
-function inPrototype (o, key) {
-	const proto = Object.getPrototypeOf(o || {});
-	return proto && (proto.hasOwnProperty(key) || inPrototype(proto, key));
+export function inPrototype (o, key) {
+	const base = Object.getPrototypeOf(o || {});
+	const proto = (o || {}).prototype;
+	return Boolean(proto && (proto.hasOwnProperty(key) || inPrototype(base, key)));
 }
 
 function getOwnPropertyDescriptors (obj) {
@@ -23,7 +29,8 @@ function getOwnPropertyDescriptors (obj) {
 }
 
 
-function getMixins (target) {
+//exported for testing
+export function getMixins (target) {
 	const ownList = target.hasOwnProperty(MIXINS) ? target[MIXINS] : [];
 
 	if (ownList.length === 0) {
@@ -43,12 +50,12 @@ function getMixins (target) {
 		ownList.push(...seen);
 	}
 
-	target[MIXINS] = ownList;
 	return ownList;
 }
 
 
-function initMixins (...args) {
+//exported for testing
+export function initMixins (...args) {
 	const list = getMixins(this.constructor);
 	for (let partial of list) {
 		//Prefer 'initMixin' over constructor.
@@ -60,19 +67,31 @@ function initMixins (...args) {
 }
 
 
-function handle (target, partials) {
+//exported for testing
+export function handle (target, partials) {
 
 	if (partials.length === 0) {
 		throw new SyntaxError(`@mixin() class ${target.name} requires at least one mixin as an argument`);
 	}
 
-	if (inPrototype(target, 'initMixins')) {
+	if (partials.some(x => Object.getPrototypeOf(x) !== Object.prototype)) {
+		throw new SyntaxError(`@mixin() class ${target.name} cannot mixin non-objects`);
+	}
+
+	if (inPrototype(target, 'initMixins') && target.prototype.initMixins !== initMixins) {
 		throw new TypeError(`@mixin(): class ${target.name} defines an initMixins property. This method must be defined by the @mixin() decorator.`);
 	}
 
-	target.prototype.initMixins = initMixins;
+	if (target.prototype.initMixins && target.prototype.initMixins !== initMixins) {
+		throw new TypeError(`@mixin(): class ${target.name} cannot define a initMixins() method`);
+	}
+
+	if (target.prototype.initMixins !== initMixins) {
+		target.prototype.initMixins = initMixins;
+	}
 
 	const seen = getMixins(target);
+	const startLength = seen.length;
 
 	for (let partial of partials) {
 
@@ -88,30 +107,34 @@ function handle (target, partials) {
 		for (let key of props) {
 			const desc = descs[key];
 
-			if (key === 'initMixin') {
+			if (key === 'initMixin' || key === 'constructor') {
 				continue;
 			}
 
-			if (target[key] == null || !inPrototype(target, key)) {
+			if (target.prototype[key] == null || !inPrototype(target, key)) {
 				defineProperty(target.prototype, key, desc);
+			} else {
+				logger.debug(`${target.name} already defines %s, skipping...`, key);
 			}
 		}
+	}
+
+	if (seen.length > startLength) {
+		target[MIXINS] = seen;
 	}
 
 	return target;
 }
 
 export default function mixin (...partials) {
+	const [target, property, desc] = partials;
+	if (!target || (typeof property === 'string' && typeof desc === 'object')) {
+		throw new SyntaxError('@mixin can only be applied to classes');
+	}
 
-	if (typeof partials[0] === 'function') {
-		const [target, property, desc] = partials;
-
-		if (property || desc) {
-			throw new SyntaxError('@mixin can only be applied to classes');
-		}
-
+	if (typeof target === 'function') {
 		return handle(target, []);
 	}
 
-	return target => handle(target, partials);
+	return t => handle(t, partials);
 }
