@@ -12,9 +12,19 @@ describe('Configurable Decorator', () => {
 
 	test('With valid args, returns a function ', () => {
 		expect(() => configurable(true)).not.toThrow();
-		expect(() => configurable(true)).toEqual(expect.any(Function));
+		expect(configurable(true)).toEqual(expect.any(Function));
 		expect(() => configurable(false)).not.toThrow();
-		expect(() => configurable(false)).toEqual(expect.any(Function));
+		expect(configurable(false)).toEqual(expect.any(Function));
+
+		const desc = {};
+		expect(() => configurable({}, 'test', desc)).not.toThrow();
+		expect(desc.configurable).toBe(true);
+
+		delete desc.configurable;
+		expect(desc.configurable).toBeUndefined();
+
+		expect(configurable({}, 'test', desc)).toBeUndefined();
+		expect(desc.configurable).toBe(true);
 	});
 
 	test('Returned decorate function: throws on invalid args', () => {

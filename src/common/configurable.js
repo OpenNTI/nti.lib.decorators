@@ -1,12 +1,21 @@
-export default function configurable (value) {
-	if (typeof value !== 'boolean') {
-		throw new SyntaxError('A boolean argument is required');
-	}
+export default function configurable (value, ...args) {
 
-	return (_, __, desc) => {
+	const decorate = (_, __, desc) => {
 		if (desc == null || typeof desc !== 'object') {
 			throw new SyntaxError('Can only be applied to properties');
 		}
 		desc.configurable = Boolean(value);
 	};
+
+	if (typeof value !== 'boolean') {
+		const [property, desc] = args;
+		if (typeof property === 'string' && typeof desc === 'object') {
+			value = true;
+			return decorate(value, property, desc);
+		}
+
+		throw new SyntaxError('A boolean argument is required');
+	}
+
+	return decorate;
 }

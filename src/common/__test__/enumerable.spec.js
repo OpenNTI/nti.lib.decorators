@@ -12,9 +12,19 @@ describe('Enumerable Decorator', () => {
 
 	test('With valid args, returns a function ', () => {
 		expect(() => enumerable(true)).not.toThrow();
-		expect(() => enumerable(true)).toEqual(expect.any(Function));
+		expect(enumerable(true)).toEqual(expect.any(Function));
 		expect(() => enumerable(false)).not.toThrow();
-		expect(() => enumerable(false)).toEqual(expect.any(Function));
+		expect(enumerable(false)).toEqual(expect.any(Function));
+
+		const desc = {};
+		expect(() => enumerable({}, 'test', desc)).not.toThrow();
+		expect(desc.enumerable).toBe(true);
+
+		delete desc.enumerable;
+		expect(desc.enumerable).toBeUndefined();
+
+		expect(enumerable({}, 'test', desc)).toBeUndefined();
+		expect(desc.enumerable).toBe(true);
 	});
 
 	test('Returned decorate function: throws on invalid args', () => {
