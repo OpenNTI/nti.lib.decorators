@@ -1,5 +1,4 @@
 export configurable from './configurable';
-export deprecated from './deprecated';
 export enumerable from './enumerable';
 export mixin from './mixin';
 export nonconfigurable from './non-configurable';

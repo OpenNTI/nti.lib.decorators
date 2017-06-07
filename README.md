@@ -1,6 +1,8 @@
 # nti-lib-decorators
 
-Provides a set of frequently used decorators such as `@readonly`.
+Provides a set of frequently used decorators such as `@readonly`. This re-exports the decorators from [core-decorators](https://www.npmjs.com/package/core-decorators).
+
+We implement our own versions of `@mixin`, `@configurable`, `@enumerable`, `@readonly`, `@nonenumerable`, and `@nonconfigurable`.
 
 -------------
 Available decorators are:
@@ -93,7 +95,6 @@ class Foo {
 }
 ```
 
-### `@deprecated`
 ### `@mixin(...partials)`
 Mix-in one or more partials into a class.
 
