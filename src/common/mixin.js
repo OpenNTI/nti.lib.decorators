@@ -45,7 +45,7 @@ export function getMixins (target) {
 				}
 			}
 		}
-		seen = seen.reduce((a, b) => [...a, ...b.filter(x => !a.includes(x))], []);
+		seen = seen.reduce((a, b) => !b ? a : [...a, ...b.filter(x => !a.includes(x))], []);
 		// console.log(target.name, seen.length, seen);
 		ownList.push(...seen);
 	}
