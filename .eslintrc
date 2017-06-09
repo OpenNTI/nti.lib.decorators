@@ -1,27 +1,3 @@
 {
-	"globals": {
-		"expect": true,
-		"fetch": true,
-		"FormData": true,
-		"File": true,
-		"Blob": true,
-		"URLSearchParams": true
-	},
-	"extends": [
-		"nti-codestyle-js"
-	],
-
-	"env": {
-		"node": true,
-		"browser": false,
-		"jasmine": false,
-		"mocha": true,
-		"es6": true
-	},
-
-	"parser": "babel-eslint",
-
-	"rules": {
-		"import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/test/*.js", "**/*.spec.js"]}]
-	}
+	"extends": "./node_modules/nti-lib-scripts/config/eslintrc.js"
 }
