@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import enumerable from '../enumerable';
 
 describe('Enumerable Decorator', () => {

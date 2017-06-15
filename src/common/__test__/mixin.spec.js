@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import Logger from 'nti-util-logger';
 
 const logger = Logger.get('decorators:Mixin');

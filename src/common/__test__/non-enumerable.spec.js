@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import nonenumerable from '../non-enumerable';
 
 describe('Configurable Decorator', () => {

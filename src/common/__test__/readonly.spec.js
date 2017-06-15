@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import readonly from '../readonly';
 
 describe('Configurable Decorator', () => {
