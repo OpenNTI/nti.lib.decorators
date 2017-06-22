@@ -6,11 +6,11 @@ const logger = Logger.get('decorators:Mixin');
 export const MIXINS = Symbol('Applied Mixins');
 
 const { defineProperty, getOwnPropertyDescriptor,
-		getOwnPropertyNames, getOwnPropertySymbols } = Object;
+	getOwnPropertyNames, getOwnPropertySymbols } = Object;
 
 export const getOwnProperties = getOwnPropertySymbols
-		? (object) => [...getOwnPropertyNames(object), ...getOwnPropertySymbols(object)]
-		: getOwnPropertyNames;
+	? (object) => [...getOwnPropertyNames(object), ...getOwnPropertySymbols(object)]
+	: getOwnPropertyNames;
 
 export function inPrototype (o, key) {
 	const base = Object.getPrototypeOf(o || {});
