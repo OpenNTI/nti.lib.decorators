@@ -101,6 +101,10 @@ export function handle (target, partials) {
 
 		seen.push(partial);
 
+		if (typeof partial === 'function') {
+			partial = partial(target, target.prototype) || {};
+		}
+
 		const descs = getOwnPropertyDescriptors(partial);
 		const props = getOwnProperties(descs);
 
