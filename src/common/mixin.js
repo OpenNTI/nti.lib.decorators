@@ -105,11 +105,16 @@ export function handle (target, partials) {
 			throw new SyntaxError('@mixin() : Cannot mixin the same mixin more than once.');
 		}
 
-		seen.push(partial);
 
 		if (typeof partial === 'function') {
-			partial = partial(target, target.prototype) || {};
+			partial = partial(target, target.prototype);
+			if (!partial) {
+				continue;
+			}
+
 		}
+
+		seen.push(partial);
 
 		const descs = getOwnPropertyDescriptors(partial);
 		const props = getOwnProperties(descs);
