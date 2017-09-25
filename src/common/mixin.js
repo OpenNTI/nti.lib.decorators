@@ -8,6 +8,12 @@ export const MIXINS = Symbol('Applied Mixins');
 const { defineProperty, getOwnPropertyDescriptor,
 	getOwnPropertyNames, getOwnPropertySymbols } = Object;
 
+function ExpectedTypes (x) {
+	const y = Object.getPrototypeOf(x);
+	return y !== Object.prototype
+		&& y !== Function.prototype;
+}
+
 export const getOwnProperties = getOwnPropertySymbols
 	? (object) => [...getOwnPropertyNames(object), ...getOwnPropertySymbols(object)]
 	: getOwnPropertyNames;
@@ -74,7 +80,7 @@ export function handle (target, partials) {
 		throw new SyntaxError(`@mixin() class ${target.name} requires at least one mixin as an argument`);
 	}
 
-	if (partials.some(x => Object.getPrototypeOf(x) !== Object.prototype)) {
+	if (partials.some(ExpectedTypes)) {
 		throw new SyntaxError(`@mixin() class ${target.name} cannot mixin non-objects`);
 	}
 
@@ -131,14 +137,11 @@ export function handle (target, partials) {
 }
 
 export default function mixin (...partials) {
-	const [target, property, desc] = partials;
-	if (!target || (typeof property === 'string' && typeof desc === 'object')) {
+	const [, property, desc] = partials;
+	if ((typeof property === 'string' && typeof desc === 'object')) {
 		throw new SyntaxError('@mixin can only be applied to classes');
 	}
 
-	if (typeof target === 'function') {
-		return handle(target, []);
-	}
 
 	return t => handle(t, partials);
 }

@@ -139,9 +139,8 @@ describe('Mixin Decorator', () => {
 	});
 
 	test('mixin() throws errors for invalid invocations', () => {
-		expect(() => mixin()).toThrow('@mixin can only be applied to classes');
 		expect(() => mixin(class Foo {}, '', {})).toThrow('@mixin can only be applied to classes');
-		expect(() => mixin(class Foo {})).toThrow('@mixin() class Foo requires at least one mixin as an argument');
+		expect(() => mixin()(class Foo {})).toThrow('@mixin() class Foo requires at least one mixin as an argument');
 
 		const decorate = mixin({}, new Date(), '123', 123);
 		expect(decorate).toEqual(expect.any(Function));
