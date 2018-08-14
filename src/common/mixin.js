@@ -65,7 +65,7 @@ export function initMixins (...args) {
 	const list = getMixins(this.constructor);
 	for (let partial of list) {
 		//Prefer 'initMixin' over constructor.
-		const init = partial.initMixin || partial.constructor; //constructor fallback for legcy mixins
+		const init = partial.initMixin || partial.constructor; //constructor fallback for legacy mixins
 		if (init) {
 			init.apply(this, args);
 		}
