@@ -5,6 +5,8 @@ const logger = Logger.get('decorators:Mixin');
 
 import mixin, {MIXINS, getMixins, inPrototype, initMixins, handle, getOwnProperties} from '../mixin';
 
+const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
+
 describe('Mixin Decorator', () => {
 	test('getMixins(): Returns an array of mixed in values, traversing the prototype chain', () => {
 		class foo {
@@ -17,14 +19,14 @@ describe('Mixin Decorator', () => {
 
 		expect(getMixins(baz)).toEqual(['1','2','3','4','5']);
 		//getMixins does not ADD the MIXINS property
-		expect(baz.hasOwnProperty(MIXINS)).toBe(false);
+		expect(has(baz,MIXINS)).toBe(false);
 	});
 
 	test('getMixins() does not add MIXINS to class', () => {
 		class foo {}
 		expect(getMixins(foo)).toEqual([]);
 		expect(foo[MIXINS]).toBeUndefined();
-		expect(foo.hasOwnProperty(MIXINS)).toBe(false);
+		expect(has(foo,MIXINS)).toBe(false);
 	});
 
 	test('initMixins() calls the initMixin/constructor method on mixins', () => {

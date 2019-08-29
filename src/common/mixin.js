@@ -2,6 +2,8 @@ import Logger from '@nti/util-logger';
 
 const logger = Logger.get('decorators:Mixin');
 
+const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
+
 //exported for testing
 export const MIXINS = Symbol('Applied Mixins');
 
@@ -21,7 +23,7 @@ export const getOwnProperties = getOwnPropertySymbols
 export function inPrototype (o, key) {
 	const base = Object.getPrototypeOf(o || {});
 	const proto = (o || {}).prototype;
-	return Boolean(proto && (proto.hasOwnProperty(key) || inPrototype(base, key)));
+	return Boolean(proto && (has(proto, key) || inPrototype(base, key)));
 }
 
 function getOwnPropertyDescriptors (obj) {
@@ -37,7 +39,7 @@ function getOwnPropertyDescriptors (obj) {
 
 //exported for testing
 export function getMixins (target) {
-	const ownList = target.hasOwnProperty(MIXINS) ? target[MIXINS] : [];
+	const ownList = has(target,MIXINS) ? target[MIXINS] : [];
 
 	if (ownList.length === 0) {
 		let seen = [];
@@ -46,7 +48,7 @@ export function getMixins (target) {
 		while (proto) {
 			proto = Object.getPrototypeOf(proto);
 			if (proto) {
-				if (proto && proto.hasOwnProperty(MIXINS)) {
+				if (proto && has(proto, MIXINS)) {
 					seen.unshift(proto[MIXINS]);
 				}
 			}
