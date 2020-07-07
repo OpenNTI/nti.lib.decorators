@@ -4,21 +4,18 @@
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides common decorators",
-  "main": "lib/index.js",
+  "main": ".index.js",
   "module": "src/index.js",
   "files": [
-    "lib",
+    ".index.js",
     "src"
   ],
   "scripts": {
     "test": "lib-scripts test",
     "start": "lib-scripts test --watch",
-    "prepack": "lib-scripts build",
     "release": "lib-scripts release",
-    "build": "lib-scripts build",
     "clean": "lib-scripts clean",
-    "check": "lib-scripts check",
-    "install-snapshots": "lib-scripts install-snapshots"
+    "check": "lib-scripts check"
   },
   "repository": {
     "type": "git",
@@ -28,7 +25,8 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
-    "@nti/util-logger": "^1.0.0"
+    "@nti/util-logger": "NextThought/nti.util.logger",
+    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"

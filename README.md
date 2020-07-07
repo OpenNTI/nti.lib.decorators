@@ -1,5 +1,8 @@
 # nti-lib-decorators
 
+![Build Status](https://github.com/NextThought/nti.lib.decorators/workflows/Tests/badge.svg)
+
+
 Provides a set of frequently used decorators such as `@readonly`. This re-exports the decorators from [core-decorators](https://www.npmjs.com/package/core-decorators).
 
 We implement our own versions of `@mixin`, `@configurable`, `@enumerable`, `@readonly`, `@nonenumerable`, and `@nonconfigurable`.
