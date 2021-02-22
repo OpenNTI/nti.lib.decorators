@@ -2,13 +2,14 @@
 import configurable from '../configurable';
 
 describe('Configurable Decorator', () => {
-
 	test('No arguments throw.', () => {
 		expect(configurable).toThrow('A boolean argument is required');
 	});
 
 	test('Bad arguments throw.', () => {
-		expect(() => configurable('yes')).toThrow('A boolean argument is required');
+		expect(() => configurable('yes')).toThrow(
+			'A boolean argument is required'
+		);
 	});
 
 	test('With valid args, returns a function ', () => {
@@ -32,18 +33,29 @@ describe('Configurable Decorator', () => {
 		const decorate = configurable(false);
 		expect(() => decorate()).toThrow('Can only be applied to propertie');
 		expect(() => decorate({})).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '')).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', '')).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', 1)).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', null)).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', {})).not.toThrow('Can only be applied to propertie');
+		expect(() => decorate({}, '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', 1)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', null)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', {})).not.toThrow(
+			'Can only be applied to propertie'
+		);
 	});
 
 	test('Returned decorate function: sets configurable', () => {
-		function test (b) {
-			const o = {}, decorate = configurable(b);
+		function test(b) {
+			const o = {},
+				decorate = configurable(b);
 			decorate({}, '', o);
-			expect(o).toEqual({configurable: b});
+			expect(o).toEqual({ configurable: b });
 		}
 
 		test(true);

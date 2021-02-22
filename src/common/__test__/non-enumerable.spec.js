@@ -2,15 +2,28 @@
 import nonenumerable from '../non-enumerable';
 
 describe('Configurable Decorator', () => {
-
 	test('decorate function: throws on invalid args', () => {
-		expect(() => nonenumerable()).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({})).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({}, '')).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({}, '', '')).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({}, '', 1)).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({}, '', null)).toThrow('Can only be applied to propertie');
-		expect(() => nonenumerable({}, '', {})).not.toThrow('Can only be applied to propertie');
+		expect(() => nonenumerable()).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({})).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({}, '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({}, '', '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({}, '', 1)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({}, '', null)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => nonenumerable({}, '', {})).not.toThrow(
+			'Can only be applied to propertie'
+		);
 	});
 
 	test('Return value is void.', () => {
@@ -20,7 +33,7 @@ describe('Configurable Decorator', () => {
 	test('Returned decorate function: sets enumerable', () => {
 		const o = {};
 		nonenumerable({}, '', o);
-		expect(o).toEqual({enumerable: false});
+		expect(o).toEqual({ enumerable: false });
 	});
 
 	/*

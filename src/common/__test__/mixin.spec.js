@@ -3,51 +3,57 @@ import Logger from '@nti/util-logger';
 
 const logger = Logger.get('decorators:Mixin');
 
-import mixin, {MIXINS, getMixins, inPrototype, initMixins, handle, getOwnProperties} from '../mixin';
+import mixin, {
+	MIXINS,
+	getMixins,
+	inPrototype,
+	initMixins,
+	handle,
+	getOwnProperties,
+} from '../mixin';
 
 const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
 describe('Mixin Decorator', () => {
 	test('getMixins(): Returns an array of mixed in values, traversing the prototype chain', () => {
 		class foo {
-			static [MIXINS] = ['1', '2']
+			static [MIXINS] = ['1', '2'];
 		}
 		class bar extends foo {
-			static [MIXINS] = ['3', '4', '5']
+			static [MIXINS] = ['3', '4', '5'];
 		}
 		class baz extends bar {}
 
-		expect(getMixins(baz)).toEqual(['1','2','3','4','5']);
+		expect(getMixins(baz)).toEqual(['1', '2', '3', '4', '5']);
 		//getMixins does not ADD the MIXINS property
-		expect(has(baz,MIXINS)).toBe(false);
+		expect(has(baz, MIXINS)).toBe(false);
 	});
 
 	test('getMixins() does not add MIXINS to class', () => {
 		class foo {}
 		expect(getMixins(foo)).toEqual([]);
 		expect(foo[MIXINS]).toBeUndefined();
-		expect(has(foo,MIXINS)).toBe(false);
+		expect(has(foo, MIXINS)).toBe(false);
 	});
 
 	test('initMixins() calls the initMixin/constructor method on mixins', () => {
-		const mixinA = {initMixin: jest.fn()};
-		const mixinB = {initMixin: jest.fn(), constructor: jest.fn()};
-		const mixinC = {constructor: jest.fn()};
+		const mixinA = { initMixin: jest.fn() };
+		const mixinB = { initMixin: jest.fn(), constructor: jest.fn() };
+		const mixinC = { constructor: jest.fn() };
 
 		class baz {
-			static [MIXINS] = [mixinA, mixinB, mixinC]
+			static [MIXINS] = [mixinA, mixinB, mixinC];
 		}
 
 		class bar extends baz {}
 
 		class foo extends bar {
-			constructor () {
+			constructor() {
 				super();
 				this.initMixins = jest.fn(initMixins);
 				this.initMixins(123);
 			}
 		}
-
 
 		const meh = new foo();
 
@@ -62,7 +68,7 @@ describe('Mixin Decorator', () => {
 
 	test('inPrototype()', () => {
 		class Foo {
-			test () {}
+			test() {}
 		}
 
 		class Bar extends Foo {}
@@ -74,7 +80,7 @@ describe('Mixin Decorator', () => {
 	});
 
 	test('handle() applies partials to {target.prototype}', () => {
-		const partial = {myTestFn () {}, [Symbol()]: 'foo', bar: 'baz'};
+		const partial = { myTestFn() {}, [Symbol()]: 'foo', bar: 'baz' };
 		class Foo {}
 
 		for (let key of getOwnProperties(partial)) {
@@ -90,7 +96,7 @@ describe('Mixin Decorator', () => {
 		//Validate we do not polute the wrong prototypes...
 
 		class Bar {}
-		function meh () {}
+		function meh() {}
 
 		for (let key of getOwnProperties(partial)) {
 			expect(Bar[key]).toBeUndefined();
@@ -101,9 +107,9 @@ describe('Mixin Decorator', () => {
 	});
 
 	test('handle() skips & warns conflicting keys...', () => {
-		const partial = {test: () => 'mixin'};
+		const partial = { test: () => 'mixin' };
 		class Foo {
-			test () {
+			test() {
 				return 'class version';
 			}
 		}
@@ -114,12 +120,15 @@ describe('Mixin Decorator', () => {
 
 		expect(Foo.prototype.test).not.toBe(partial.test);
 
-		expect(logger.debug).toHaveBeenCalledWith('Foo already defines %s, skipping...', 'test');
+		expect(logger.debug).toHaveBeenCalledWith(
+			'Foo already defines %s, skipping...',
+			'test'
+		);
 	});
 
 	test('handle() adds initMixins() to {target.prototype}', () => {
-		const partial = {test: () => 'mixin'};
-		const partial2 = {test2: () => 'mixin'};
+		const partial = { test: () => 'mixin' };
+		const partial2 = { test2: () => 'mixin' };
 
 		class Foo {}
 		expect(() => handle(Foo, [partial])).not.toThrow();
@@ -132,29 +141,37 @@ describe('Mixin Decorator', () => {
 	});
 
 	test('handle() throws if initMixins() is already defined on {target.prototype}', () => {
-		const partial = {test: () => 'mixin'};
+		const partial = { test: () => 'mixin' };
 		class Foo {
-			initMixins () {}
+			initMixins() {}
 		}
 
-		expect(() => handle(Foo, [partial])).toThrow('@mixin(): class Foo defines an initMixins property. This method must be defined by the @mixin() decorator.');
+		expect(() => handle(Foo, [partial])).toThrow(
+			'@mixin(): class Foo defines an initMixins property. This method must be defined by the @mixin() decorator.'
+		);
 	});
 
 	test('mixin() throws errors for invalid invocations', () => {
-		expect(() => mixin(class Foo {}, '', {})).toThrow('@mixin can only be applied to classes');
-		expect(() => mixin()(class Foo {})).toThrow('@mixin() class Foo requires at least one mixin as an argument');
+		expect(() => mixin(class Foo {}, '', {})).toThrow(
+			'@mixin can only be applied to classes'
+		);
+		expect(() => mixin()(class Foo {})).toThrow(
+			'@mixin() class Foo requires at least one mixin as an argument'
+		);
 
 		const decorate = mixin({}, new Date(), '123', 123);
 		expect(decorate).toEqual(expect.any(Function));
-		expect(() => decorate(class Foo {})).toThrow('@mixin() class Foo cannot mixin non-objects');
+		expect(() => decorate(class Foo {})).toThrow(
+			'@mixin() class Foo cannot mixin non-objects'
+		);
 	});
 
 	test('mixin() normal workflow', () => {
 		const mixA = {};
-		const mixB = {abc: '123'};
+		const mixB = { abc: '123' };
 		class Foo {}
 		let decorate = null;
-		expect(() => decorate = mixin(mixA, mixB)).not.toThrow();
+		expect(() => (decorate = mixin(mixA, mixB))).not.toThrow();
 		expect(decorate).toEqual(expect.any(Function));
 		expect(() => decorate(Foo)).not.toThrow();
 		expect(Foo.prototype.initMixins).toBe(initMixins);

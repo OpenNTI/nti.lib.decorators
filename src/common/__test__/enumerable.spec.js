@@ -2,13 +2,14 @@
 import enumerable from '../enumerable';
 
 describe('Enumerable Decorator', () => {
-
 	test('No arguments throw.', () => {
 		expect(enumerable).toThrow('A boolean argument is required');
 	});
 
 	test('Bad arguments throw.', () => {
-		expect(() => enumerable('yes')).toThrow('A boolean argument is required');
+		expect(() => enumerable('yes')).toThrow(
+			'A boolean argument is required'
+		);
 	});
 
 	test('With valid args, returns a function ', () => {
@@ -32,18 +33,29 @@ describe('Enumerable Decorator', () => {
 		const decorate = enumerable(false);
 		expect(() => decorate()).toThrow('Can only be applied to propertie');
 		expect(() => decorate({})).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '')).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', '')).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', 1)).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', null)).toThrow('Can only be applied to propertie');
-		expect(() => decorate({}, '', {})).not.toThrow('Can only be applied to propertie');
+		expect(() => decorate({}, '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', '')).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', 1)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', null)).toThrow(
+			'Can only be applied to propertie'
+		);
+		expect(() => decorate({}, '', {})).not.toThrow(
+			'Can only be applied to propertie'
+		);
 	});
 
 	test('Returned decorate function: sets enumerable', () => {
-		function test (b) {
-			const o = {}, decorate = enumerable(b);
+		function test(b) {
+			const o = {},
+				decorate = enumerable(b);
 			decorate({}, '', o);
-			expect(o).toEqual({enumerable: b});
+			expect(o).toEqual({ enumerable: b });
 		}
 
 		test(true);

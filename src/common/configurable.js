@@ -1,5 +1,4 @@
-export default function configurable (value, ...args) {
-
+export default function configurable(value, ...args) {
 	const decorate = (_, __, desc) => {
 		if (desc == null || typeof desc !== 'object') {
 			throw new SyntaxError('Can only be applied to properties');
