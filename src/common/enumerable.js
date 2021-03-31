@@ -1,4 +1,4 @@
-export default function enumerable(value, ...args) {
+export function enumerable(value, ...args) {
 	const decorate = (_, __, desc) => {
 		if (desc == null || typeof desc !== 'object') {
 			throw new SyntaxError('Can only be applied to properties');

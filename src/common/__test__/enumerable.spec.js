@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import enumerable from '../enumerable';
+import { enumerable } from '../enumerable.js';
 
 describe('Enumerable Decorator', () => {
 	test('No arguments throw.', () => {

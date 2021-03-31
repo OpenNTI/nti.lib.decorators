@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import nonenumerable from '../non-enumerable';
+import { nonenumerable } from '../non-enumerable.js';
 
 describe('Configurable Decorator', () => {
 	test('decorate function: throws on invalid args', () => {

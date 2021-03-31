@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import nonconfigurable from '../non-configurable';
+import { nonconfigurable } from '../non-configurable.js';
 
 describe('Configurable Decorator', () => {
 	test('decorate function: throws on invalid args', () => {

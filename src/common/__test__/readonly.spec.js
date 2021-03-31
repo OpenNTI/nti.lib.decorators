@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import readonly from '../readonly';
+import { readonly } from '../readonly.js';
 
 describe('Configurable Decorator', () => {
 	test('decorate function: throws on invalid args', () => {

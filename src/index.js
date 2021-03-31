@@ -11,4 +11,4 @@
 // 	suppressWarnings,
 // 	time
 // } from 'core-decorators';
-export * from './common';
+export * from './common/index.js';

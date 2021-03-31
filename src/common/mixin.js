@@ -164,7 +164,7 @@ export function handle(target, partials) {
 	return target;
 }
 
-export default function mixin(...partials) {
+export function mixin(...partials) {
 	const [, property, desc] = partials;
 	if (typeof property === 'string' && typeof desc === 'object') {
 		throw new SyntaxError('@mixin can only be applied to classes');

@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import configurable from '../configurable';
+import { configurable } from '../configurable.js';
 
 describe('Configurable Decorator', () => {
 	test('No arguments throw.', () => {

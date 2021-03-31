@@ -4,10 +4,9 @@
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides common decorators",
-  "main": ".index.js",
-  "module": "src/index.js",
+  "main": "src/index.js",
+  "type": "module",
   "files": [
-    ".index.js",
     "src"
   ],
   "scripts": {
@@ -25,8 +24,7 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
-    "@nti/util-logger": "NextThought/nti.util.logger",
-    "esm": "^3.2.25"
+    "@nti/util-logger": "NextThought/nti.util.logger"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"

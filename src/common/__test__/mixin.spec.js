@@ -3,14 +3,15 @@ import Logger from '@nti/util-logger';
 
 const logger = Logger.get('decorators:Mixin');
 
-import mixin, {
+import {
+	mixin,
 	MIXINS,
 	getMixins,
 	inPrototype,
 	initMixins,
 	handle,
 	getOwnProperties,
-} from '../mixin';
+} from '../mixin.js';
 
 const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
