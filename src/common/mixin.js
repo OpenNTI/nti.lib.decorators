@@ -1,3 +1,4 @@
+/// <reference path="../index.d.ts" />
 import Logger from '@nti/util-logger';
 
 const logger = Logger.get('decorators:Mixin');
@@ -81,18 +82,6 @@ export function initMixins(...args) {
 	}
 }
 
-/** @typedef {any[]} Arr */
-
-/**
- * exported for testing
- *
- * @template T
- * @template {Arr} U
- * @template R
- * @param {T} target
- * @param {U} partials
- * @returns {R}
- */
 export function handle(target, partials) {
 	if (partials.length === 0) {
 		throw new SyntaxError(
@@ -175,11 +164,6 @@ export function handle(target, partials) {
 	return target;
 }
 
-/**
- * @template T, U extends *
- * @param  {...U} partials
- * @returns {(x: T) => T & U}
- */
 export function mixin(...partials) {
 	const [, property, desc] = partials;
 	if (typeof property === 'string' && typeof desc === 'object') {
