@@ -1,4 +1,3 @@
-/// <reference path="../index.d.ts" />
 import Logger from '@nti/util-logger';
 
 const logger = Logger.get('decorators:Mixin');
@@ -164,6 +163,12 @@ export function handle(target, partials) {
 	return target;
 }
 
+/**
+ * @deprecated
+ * @template T
+ * @param  {...any} partials
+ * @returns {(x:T) => T}
+ */
 export function mixin(...partials) {
 	const [, property, desc] = partials;
 	if (typeof property === 'string' && typeof desc === 'object') {
